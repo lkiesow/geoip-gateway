@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<title>Opencast: Nexus Infrastructure</title>
+  <link href='https://fonts.googleapis.com/css?family=Arimo:400,400italic,700,700italic' rel='stylesheet'
+  type='text/css'>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div style="border-bottom: 1px solid silver;">
+  <img src=http://espresslabs.com/opencast_wp/wp-content/uploads/2015/06/opencast.png alt=Opencast />
+</div>
+<h1>Nexus Infrastructure</h1>
+
+<p>
+The Opencast Nexus infrastructure provides Maven repositories to serve artifacts necessaty to build <a
+  href=http://opencast.org>Opencast</a>. The repositories are hosted all around the world and GeoIP is used to determine
+the selection of a specific Nexus server. If you want to sponsor an additional mirrow or notice that your country is
+missing from the current GeoIP rules, please send a message to the <a href=http://www.opencast.org/community>Opencast
+  mailing list</a>.</p>
+
+<h2>Your Status</h2>
+
+<ul>
+  <li>Selection is based on GeoIP: <em>{{ geoselect }}</em></li>
+  {% if geoselect %}
+  <li>Your country code is: <em>{{ country }}</em></li>
+  {% else %}
+  <li>Nexus selected by random.</li>
+  {% endif %}
+  <li>Selected Nexus server: <a href={{ server }}><em>{{ shorten(server) }}</em></a></li>
+</ul>
+
+<h2>Nexus Servers</h2>
+
+<table>
+  <thead>
+    <tr>
+      <td>Server</td>
+      <td>Preferred Countries</td>
+      <td>Status</td>
+    </tr>
+  </thead>
+  {% for nexus, countries in nexi.iteritems() %}
+  <tr>
+    <td><a href={{ nexus }}>{{ shorten(nexus) }}</a></td>
+    <td>{{ ', '.join(countries) }}</td>
+    <td class=offline{{ nexus in offline }}>{{ 'offline' if nexus in offline else 'online' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<footer>
+	This site is based on <a href=https://github.com/lkiesow/geoip-gateway>GeoIP Gateway.</a>
+</footer>
+
+</body>
+</html>

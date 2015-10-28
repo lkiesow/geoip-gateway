@@ -1,0 +1,5 @@
+{
+  "http://nexus.virtuos.uos.de:8081/nexus"  : ["DE", "FI", "NO", "SE"],
+  "http://nexus.dcex.harvard.edu:8081/nexus": ["US", "CA"],
+  "http://opencast-nexus.ethz.ch:8081/nexus": ["CH", "AT", "FR", "GB", "ES"]
+}

@@ -13,15 +13,20 @@ CONFIG = {}
 def setup():
     random.seed()
 
+    cfgdir = os.path.dirname(os.path.abspath(__file__))
+
     # Load GeoIP object
-    GEOIP_FILE = '/usr/share/GeoIP/GeoIP.dat'
-    CONFIG['geoip'] = pygeoip.GeoIP(GEOIP_FILE)
+    GEOIP_FILE = cfgdir + '/GeoIP.dat'
+    try:
+        CONFIG['geoip'] = pygeoip.GeoIP(GEOIP_FILE)
+    except IOError:
+        GEOIP_FILE = '/usr/share/GeoIP/GeoIP.dat'
+        CONFIG['geoip'] = pygeoip.GeoIP(GEOIP_FILE)
 
     # Create temporary server offline db
     CONFIG['offline'] = []
 
     # Load configuration
-    cfgdir = os.path.dirname(os.path.abspath(__file__))
     with open(cfgdir + '/nexus.opencast.org.json') as f:
         CONFIG['nexi'] = json.load(f)
 

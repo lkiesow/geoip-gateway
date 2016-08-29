@@ -57,17 +57,16 @@ def shorten_nexus(nexus):
 
 def select(addr):
     country = CONFIG['geoip'].country_code_by_addr(addr)
-    for server, codes in CONFIG['nexi'].iteritems():
-        if server in CONFIG['offline']:
-            continue
+    nexi = CONFIG['nexi'].iteritems()
+    online_nexi = [n for n in nexi if not n[0] in CONFIG['offline']]
+    for server, codes in online_nexi:
         if country in codes:
             return True, country, server
-    return False, country, random.choice(CONFIG['nexi'].keys())
+    return False, country, random.choice(online_nexi)[0]
 
 
 @app.route("/")
 def home():
-
     geoselect, country, server = select(request.remote_addr)
 
     return render_template('home.html', country=country, geoselect=geoselect,
